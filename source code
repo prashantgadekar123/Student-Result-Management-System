@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Student result</title>
+   <link href="css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+   <script>
+
+      var student = [];
+      var index = -1;
+
+      function calculate() {
+         var english = Number(document.getElementById("english").value);
+         var math = Number(document.getElementById("math").value);
+         var science = Number(document.getElementById("science").value);
+
+         var total = english + math + science;
+         var percentage = (total / 3).toFixed(2);
+
+         var grade = "";
+         var color = "";
+         if (percentage >= 35) {
+            grade = "Pass";
+         }
+         else {
+            grade = "Fail";
+         }
+
+         document.getElementById("total").value = total;
+         document.getElementById("percentage").value = percentage;
+         document.getElementById("grade").value = grade;
+
+      }
+
+      function addStudent() {
+         var rollno = document.getElementById("rollno").value;
+         var name = document.getElementById("name").value;
+         var english = Number(document.getElementById("english").value);
+         var math = Number(document.getElementById("math").value);
+         var science = Number(document.getElementById("science").value);
+         var total = Number(document.getElementById("total").value);
+         var percentage = Number(document.getElementById("percentage").value);
+         var grade = document.getElementById("grade").value;
+         var color = "";
+         if (grade == 'Pass') {
+            color = 'green';
+         } else {
+            color = 'red';
+         }
+
+         var st = {
+            "rollno": rollno,
+            "name": name,
+            "english": english,
+            "math": math,
+            "science": science,
+            "total": total,
+            "percentage": percentage,
+            "grade": grade,
+            "color": color
+         };
+         student.push(st);
+
+         alert("Student added successfully!!!");
+         display();
+         clearData();
+      }
+
+      function display() {
+         var data = "";
+
+         for (var i = 0; i < student.length; i++) {
+
+            data += "<tr style = 'color : " + student[i].color
+               + "'><td>" + student[i].rollno
+               + "</td><td>" + student[i].name
+               + "</td><td>" + student[i].english
+               + "</td><td>" + student[i].math
+               + "</td><td>" + student[i].science
+               + "</td><td>" + student[i].total
+               + "</td><td>" + student[i].percentage
+               + "</td><td>" + student[i].grade
+               + "</td><td><input type = 'button' value = 'View' onclick = 'viewStudent(" + i + ")'/> <input type = 'button' value = 'Delete' onclick = 'deleteStudent(" + i + ")'/>"
+               + "</td></tr>"
+         }
+         document.getElementById("tbldata").innerHTML = data;
+
+      }
+
+      function clearData() {
+         document.getElementById("rollno").value = " ";
+         document.getElementById("name").value = " ";
+         document.getElementById("english").value = " ";
+         document.getElementById("math").value = " ";
+         document.getElementById("science").value = " ";
+         document.getElementById("total").value = " ";
+         document.getElementById("percentage").value = " ";
+         document.getElementById("grade").value = " ";
+      }
+
+      function viewStudent(i) {
+         index = i;
+         var view_student = student[index];
+         document.getElementById("rollno").value = view_student.rollno;
+         document.getElementById("name").value = view_student.name;
+         document.getElementById("english").value = view_student.english;
+         document.getElementById("math").value = view_student.math;
+         document.getElementById("science").value = view_student.science;
+         document.getElementById("total").value = view_student.total;
+         document.getElementById("percentage").value = view_student.percentage;
+         document.getElementById("grade").value = view_student.grade;
+      }
+
+      function updateStudent() {
+         var rollno = document.getElementById("rollno").value;
+         var name = document.getElementById("name").value;
+         var english = Number(document.getElementById("english").value);
+         var math = Number(document.getElementById("math").value);
+         var science = Number(document.getElementById("science").value);
+         var total = Number(document.getElementById("total").value);
+         var percentage = Number(document.getElementById("percentage").value);
+         var grade = document.getElementById("grade").value;
+
+         var update_student = {
+            "rollno": rollno,
+            "name": name,
+            "english": english,
+            "math": math,
+            "science": science,
+            "total": total,
+            "percentage": percentage,
+            "grade": grade
+         };
+
+         student[index] = update_student;
+         alert("Student updated successfully");
+         clearData();
+         display();
+      }
+
+      function deleteStudent(i) {
+         if (confirm("do you want to delete?")) {
+            student.splice(i, 1);
+            alert("student deleted successfully !!!");
+            display();
+         }
+      }
+
+   </script>
+</head>
+
+<body>
+   <div class="col-md-12">
+      <div class="col-md-4">
+         <div class="panel panel-primary">
+            <div class="panel-heading">
+               <h2>Student Result </h2>
+            </div>
+            <div class="panel-body">
+               <div class="form-group">
+                  <label>Roll No</label>
+                  <input type="text" id="rollno" placeholder="Roll No" class="form-control">
+               </div>
+               <div class="form-group">
+                  <label>Name</label>
+                  <input type="text" id="name" placeholder="Student name" class="form-control">
+               </div>
+               <div class="form-group">
+                  <label>English</label>
+                  <input type="text" id="english" placeholder="English" class="form-control" onchange="calculate()">
+               </div>
+               <div class="form-group">
+                  <label>Math</label>
+                  <input type="text" id="math" placeholder="Math" class="form-control" onchange="calculate()">
+               </div>
+               <div class="form-group">
+                  <label>Science</label>
+                  <input type="text" id="science" placeholder="Science" class="form-control" onchange="calculate()">
+               </div>
+               <div class="form-group">
+                  <label>Total</label>
+                  <input type="text" id="total" placeholder="total" class="form-control">
+               </div>
+               <div class="form-group">
+                  <label>Percentage</label>
+                  <input type="text" id="percentage" placeholder="percentage" class="form-control">
+               </div>
+               <div class="form-group">
+                  <label>Grade</label>
+                  <input type="text" id="grade" placeholder="grade" class="form-control">
+               </div>
+            </div>
+            <div class="panel-footer">
+               <button class="btn btn-primary" id="submit" onclick="addStudent()">Submit</button>
+               <button class="btn" id="update" onclick="updateStudent()">Update</button>
+            </div>
+
+         </div>
+      </div>
+      <div class="col-md-8">
+         <table class="table table-bordered">
+            <thead>
+               <tr>
+                  <th>Roll No</th>
+                  <th>Student Name</th>
+                  <th>English</th>
+                  <th>Math</th>
+                  <th>Science</th>
+                  <th>Total</th>
+                  <th>Percentage</th>
+                  <th>Grade</th>
+                  <th>Action</th>
+               </tr>
+            </thead>
+            <tbody id="tbldata">
+
+            </tbody>
+         </table>
+      </div>
+   </div>
+
+</body>
+
+</html>
